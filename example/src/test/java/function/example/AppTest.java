@@ -1,4 +1,4 @@
-package storedprocedure.example;
+package function.example;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

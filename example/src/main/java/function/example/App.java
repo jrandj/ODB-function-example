@@ -16,8 +16,9 @@ import java.util.Properties;
 public class App {
 	public static void main(String[] args) {
 		String result = null;
+		String word = "racecar";
 		try {
-			result = checkForPalindrome("racecar");
+			result = checkForPalindrome(word);
 		} catch (SQLException e) {
 			System.out.println("Error encountered: " + e);
 			e.printStackTrace();
@@ -26,10 +27,13 @@ public class App {
 	}
 
 	public static Connection getConnection() {
+		
 		Properties prop = ReadPropertyFile();
 		Connection conn = null;
 		try {
-			conn = DriverManager.getConnection(prop.getProperty("db.URL"), prop.getProperty("db.user"), prop.getProperty("db.password"));
+			conn = DriverManager.getConnection(prop.getProperty("db.URL"), prop.getProperty("db.user"),
+					prop.getProperty("db.password"));
+			
 		} catch (SQLException e) {
 			System.out.println("Error encountered: " + e);
 			e.printStackTrace();
@@ -38,7 +42,7 @@ public class App {
 	}
 
 	public static String checkForPalindrome(String word) throws SQLException {
-		String sql = "{? = call CHECKFORPALINDROME(?)}";	
+		String sql = "{? = call CHECKFORPALINDROME(?)}";
 		try (Connection conn = getConnection(); java.sql.CallableStatement stmt = conn.prepareCall(sql);) {
 			stmt.setString(2, word);
 			stmt.registerOutParameter(1, java.sql.Types.VARCHAR);
@@ -47,10 +51,10 @@ public class App {
 			return stmtResult;
 		}
 	}
-	
+
 	private static Properties ReadPropertyFile() {
 		Properties prop = new Properties();
-		try (InputStream input = new FileInputStream("C:\\config.properties")) {
+		try (InputStream input = new FileInputStream("c:\\config.properties")) {
 			prop.load(input);
 		} catch (FileNotFoundException e) {
 			System.out.println("Error encountered: " + e);
@@ -60,5 +64,5 @@ public class App {
 			e.printStackTrace();
 		}
 		return prop;
-	}	
+	}
 }
